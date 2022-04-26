@@ -33,14 +33,14 @@ public class PostService {
 
 
 
-    public ApiResponse deletePost(String title){
+    public ApiResponse deletePost(Long id){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Post> byTitle = postRepository.findByUrl(title.toLowerCase());
-
-        if (!byTitle.isPresent())
+//        Optional<Post> byTitle = postRepository.findByUrl(title.toLowerCase());
+        Optional<Post> byId = postRepository.findById(id);
+        if (!byId.isPresent())
             return new ApiResponse("bunday post qoshilmagan", false);
 
-        Post post = byTitle.get();
+        Post post = byId.get();
         if (!post.getCreatedBy().getId().equals(user.getId()))
             throw  new ForbiddenException(user.getUsername(),"bu postni siz qoshmagansiz");
 

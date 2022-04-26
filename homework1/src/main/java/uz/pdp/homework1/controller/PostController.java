@@ -11,24 +11,24 @@ import uz.pdp.homework1.payload.PostDto;
 import uz.pdp.homework1.service.PostService;
 
 @RestController
-@RequestMapping("/api/post")
+@RequestMapping("/api")
 public class PostController {
 
     @Autowired
     PostService postService;
 
     @CheckPermissionForPostAndCommet(permission = "ADD_POST")
-    @PostMapping
+    @PostMapping("/post")
     public HttpEntity<?> addPost(@RequestBody PostDto postDto) {
         ApiResponse apiResponse = postService.addPost(postDto);
         return ResponseEntity.status(apiResponse.isSucces()?200:405).body(apiResponse);
     }
 
 
-    @CheckPermissionForPostAndCommet(permission = "DELETED_POST")
-    @DeleteMapping("/{title}")
-    public HttpEntity<?> deletePost(@PathVariable String title) {
-        ApiResponse apiResponse = postService.deletePost(title);
+//    @CheckPermissionForPostAndCommet(permission = "DELETED_POST")
+    @DeleteMapping("/post/{id}")
+    public HttpEntity<?> deletePost(@PathVariable Long id) {
+        ApiResponse apiResponse = postService.deletePost(id);
         return ResponseEntity.status(apiResponse.isSucces()?200:405).body(apiResponse);
     }
 }
